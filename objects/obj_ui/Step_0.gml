@@ -2,23 +2,28 @@ if (mouse_check_button_pressed(mb_left)) {
     var mx = device_mouse_x_to_gui(0);
     var my = device_mouse_y_to_gui(0);
 
-    // Button parameters
-    var button_w = 120;
-    var button_h = 40;
-    var spacing = 20;
-    var gui_w = display_get_gui_width();
-    var gui_h = display_get_gui_height();
-    var ui_width = 300;
-    var game_width = gui_w - ui_width;
-    var total_w = 3 * button_w + 2 * spacing;
-    var start_x = (game_width - total_w) / 2;
-    var _y = gui_h - button_h - 20;
+    var start_x = (display_get_gui_width() - dialog_w - total_width) / 2;
 
-    // Check clicks on each button
-    for (var i = 0; i < 3; i++) {
-        var bx = start_x + i * (button_w + spacing);
-        if (mx > bx && mx < bx + button_w && my > _y && my < _y + button_h) {
-            show_message("Button " + string(i + 1) + " clicked!");
+    var y_pos = display_get_gui_height() - 100;
+
+    var player = instance_find(obj_player, 0);
+
+    for (var i = 0; i < 2; i++) {
+        var img_x = start_x + i * (portrait_size + spacing + button_w + spacing);
+        var btn_x = img_x + portrait_size + spacing;
+        var btn_y = y_pos + 10;
+
+        if (mx > btn_x && mx < btn_x + button_w && my > btn_y && my < btn_y + button_h) {
+            if (player.character != i) {
+                player.character = i;
+                player.move_speed = player.char_speeds[player.character];
+                player.sprite_index = player.char_sprites[player.character][5]; // idle_down
+                player.image_index = 0;
+                instance_create_layer(player.x, player.y+40, "Instances_effects", obj_transform_effect);
+            }
         }
     }
+
 }
+
+
