@@ -1,0 +1,1 @@
+var _inp = keyboard_check(ord("\s"));
